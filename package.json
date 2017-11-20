@@ -1,0 +1,36 @@
+{
+  "name": "StretchTransform.js",
+  "version": "0.1.0",
+  "description": "A javascript library to transform a plane in a rubbery way.",
+  "license" : "MIT",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "browserify index.js --standalone StretchTransform -o dist/StretchTransform.js",
+    "dist": "npm run bundle && browserify index.js --standalone StretchTransform | uglifyjs > dist/StretchTransform.min.js",
+    "documentation": "documentation readme index.js --section=Reference",
+    "watch": "watch 'npm run bundle' ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bohnacker/Stretch_Transform"
+  },
+  "keywords": [
+    "geometry",
+    "math",
+    "utility",
+    "transformation",
+    "transform"
+  ],
+  "author": "Hartmut Bohnacker <mail@hartmut-bohnacker.de>",
+  "bugs": {
+    "url": "https://github.com/bohnacker/Stretch_Transform/issues"
+  },
+  "homepage": "https://github.com/bohnacker/Stretch_Transform",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "documentation": "^5.2.2",
+    "uglify-js": "^3.0.28",
+    "watch": "^1.0.2",
+    "gl-matrix": "^2.4.0"
+  }
+}

@@ -31,12 +31,15 @@ function setup() {
   anchorColor = color(0, 150, 0);
   anchorHiColor = color(200, 100, 0);
 
-  // myTransform.addAnchor(createVector(margin, margin));
-  // myTransform.addAnchor(createVector(width - margin, margin));
-  // myTransform.addAnchor(createVector(width - margin, height - margin));
-  // myTransform.addAnchor(createVector(margin, height - margin));
-  // myTransform.addAnchor(createVector(300, 300), createVector(350, 330));
-  // myTransform.addAnchor(createVector(400, 400), createVector(350, 370));
+  // myTransform.addAnchor([margin, margin]);
+  // myTransform.addAnchor([width - margin, margin]);
+  // myTransform.addAnchor([width - margin, height - margin]);
+  // myTransform.addAnchor([margin, height - margin]);
+  // myTransform.addAnchor([300, 300], [350, 330]);
+  // myTransform.addAnchor([400, 400], [350, 370]);
+
+  // myTransform.setWeightingMode(StretchTransform.DIRECTIONAL);
+
 }
 
 
@@ -60,8 +63,9 @@ function draw() {
   for (var y = margin; y <= height - margin; y += tileSize) {
     for (var x = margin; x < width - margin; x += tileSize) {
       var p1 = myTransform.transform(x, y);
+      if (isNaN(p1[1])) noLoop();
       var p2 = myTransform.transform(x + tileSize, y);
-      line(p1.x, p1.y, p2.x, p2.y);
+      line(p1[0], p1[1], p2[0], p2[1]);
     }
   }
   // vertical lines
@@ -69,7 +73,7 @@ function draw() {
     for (var x = margin; x <= width - margin; x += tileSize) {
       var p1 = myTransform.transform(x, y);
       var p2 = myTransform.transform(x, y + tileSize);
-      line(p1.x, p1.y, p2.x, p2.y);
+      line(p1[0], p1[1], p2[0], p2[1]);
     }
   }
 
@@ -79,7 +83,7 @@ function draw() {
 
     var anchorOrig = myTransform.getAnchorOrigin(i);
     var anchorDest = myTransform.getAnchorTarget(i);
-    line(anchorOrig.x, anchorOrig.y, anchorDest.x, anchorDest.y);
+    line(anchorOrig[0], anchorOrig[1], anchorDest[0], anchorDest[1]);
   }
 
   strokeWeight(1);
@@ -89,7 +93,7 @@ function draw() {
     if (i == anchorNum) stroke(anchorHiColor);
 
     var anchorOrig = myTransform.getAnchorOrigin(i);
-    ellipse(anchorOrig.x, anchorOrig.y, 13, 13);
+    ellipse(anchorOrig[0], anchorOrig[1], 13, 13);
   }
 
   noStroke();
@@ -98,7 +102,7 @@ function draw() {
     if (i == anchorNum) fill(anchorHiColor);
 
     var anchorDest = myTransform.getAnchorTarget(i);
-    ellipse(anchorDest.x, anchorDest.y, 7, 7);
+    ellipse(anchorDest[0], anchorDest[1], 7, 7);
   }
 
 }
@@ -109,8 +113,8 @@ function mousePressed() {
   dragTarget = false;
   anchorNum = -1;
 
-  var io = myTransform.getAnchorByOriginPos(createVector(mouseX, mouseY), 10);
-  var it = myTransform.getAnchorByTargetPos(createVector(mouseX, mouseY), 10);
+  var io = myTransform.getAnchorByOriginPos(mouseX, mouseY, 10);
+  var it = myTransform.getAnchorByTargetPos(mouseX, mouseY, 10);
 
   if (it >= 0) {
     anchorNum = it;
@@ -119,7 +123,7 @@ function mousePressed() {
     anchorNum = io;
     dragOrigin = true;
   } else {
-    myTransform.addAnchor(createVector(mouseX, mouseY));
+    myTransform.addAnchor(mouseX, mouseY);
     anchorNum = myTransform.anchors.length - 1;
     dragTarget = true;
   }
@@ -135,7 +139,7 @@ function mouseReleased() {
 function keyTyped() {
 
   if (key == '+') {
-    myTransform.addAnchor(createVector(mouseX, mouseY));
+    myTransform.addAnchor([mouseX, mouseY]);
     anchorNum = myTransform.getAnchorCount() - 1;
   }
 
@@ -147,12 +151,11 @@ function keyTyped() {
   }
 
   if (key == ' ') {
-    var mode = myTransform.getWeightingMode();
-    if (mode == myTransform.SIMPLE) {
-      myTransform.setWeightingMode(myTransform.DIRECTIONAL);
+    if (myTransform.isSimple()) {
+      myTransform.setWeightingMode("directional");
       console.log("weightingMode = DIRECTIONAL");
     } else {
-      myTransform.setWeightingMode(myTransform.SIMPLE);
+      myTransform.setWeightingMode("simple");
       console.log("weightingMode = SIMPLE");
     }
   }
@@ -182,5 +185,5 @@ function keyTyped() {
     console.log("exponent2 = " + myTransform.getWeightingExponent2());
   }
 
-  return false
+  // return false;
 }
