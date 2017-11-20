@@ -10,9 +10,9 @@ For a more detailed explanation of this project read [this](https://hartmut-bohn
 
 ### StretchTransform
 
-new StretchTransform() create an empty StretchTransform.
+`new StretchTransform()` creates an empty StretchTransform.
 
-#### addAnchor
+### addAnchor
 
 Adds an Anchor.
 
@@ -21,7 +21,7 @@ Adds an Anchor.
 -   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin and target position
 -   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin and target position
 
-#### addAnchor
+### addAnchor
 
 Adds an Anchor.
 
@@ -32,7 +32,7 @@ Adds an Anchor.
 -   `xTarget` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for target position
 -   `yTarget` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for target position
 
-#### addAnchor
+### addAnchor
 
 Adds an Anchor.
 
@@ -41,7 +41,7 @@ Adds an Anchor.
 -   `pOrigin` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for origin position
 -   `pTarget` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for target position
 
-#### addAnchor
+### addAnchor
 
 Adds an Anchor.
 
@@ -49,7 +49,7 @@ Adds an Anchor.
 
 -   `p` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] that will be used for origin and target position
 
-#### removeAnchor
+### removeAnchor
 
 Removes an Anchor.
 
@@ -57,7 +57,7 @@ Removes an Anchor.
 
 -   `anchor` **Anchor** Anchor to remove
 
-#### removeAnchor
+### removeAnchor
 
 Removes an Anchor.
 
@@ -65,17 +65,17 @@ Removes an Anchor.
 
 -   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor
 
-#### getAnchorCount
+### getAnchorCount
 
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** of anchors added to the MultiTransform
 
-#### getAnchor
+### getAnchor
 
 **Parameters**
 
 -   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor to return.
 
-#### getAnchorByPos
+### getAnchorByPos
 
 **Parameters**
 
@@ -86,7 +86,7 @@ Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
-#### getAnchorByOriginPos
+### getAnchorByOriginPos
 
 **Parameters**
 
@@ -97,7 +97,7 @@ Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
-#### getAnchorByTargetPos
+### getAnchorByTargetPos
 
 **Parameters**
 
@@ -108,7 +108,7 @@ Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
-#### setAnchorOrigin
+### setAnchorOrigin
 
 **Parameters**
 
@@ -116,7 +116,7 @@ Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 -   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New x coordinate of the origin position.
 -   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New y coordinate of the origin position.
 
-#### setAnchorTarget
+### setAnchorTarget
 
 **Parameters**
 
@@ -124,25 +124,25 @@ Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 -   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New x coordinate of the target position.
 -   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New y coordinate of the target position.
 
-#### setWeightingMode
+### setWeightingMode
 
 **Parameters**
 
 -   `weightingMode` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** String, either 'simple' or 'directional'.
 
-#### isSimple
+### isSimple
 
 Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true, if weightingMode is SIMPLE
 
-#### isDirectional
+### isDirectional
 
 Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true, if weightingMode is DIRECTIONAL
 
-#### getWeightingExponent1
+### getWeightingExponent1
 
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-#### setWeightingExponent1
+### setWeightingExponent1
 
 Exponent of the weighting function. Defines how the relations from one anchor
 to all others are cumulated. The closer the other anchor lies, the
@@ -152,11 +152,11 @@ stronger it is weighted.
 
 -   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually something between 0 and 2. Default = 1.
 
-#### getWeightingExponent2
+### getWeightingExponent2
 
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-#### setWeightingExponent2
+### setWeightingExponent2
 
 Exponent of the weighting function when applying all anchor matrices to a
 point.
@@ -165,11 +165,11 @@ point.
 
 -   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually 1 or higher. Default = 2.
 
-#### getWeightingExponent3
+### getWeightingExponent3
 
 Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-#### setWeightingExponent3
+### setWeightingExponent3
 
 Exponent of the weighting function that factors in, if the direction
 from anchor to point and from one anchor to another is quite similar.
@@ -179,7 +179,7 @@ Only applicable when weightingMode is DIRECTIONAL.
 
 -   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually something between 0 and 2. Default = 1.
 
-#### transform
+### transform
 
 Main function of the class. Transforms a point on the plane and returns
 its new position.
@@ -192,7 +192,7 @@ its new position.
 
 Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
 
-#### transform
+### transform
 
 Main function of the class. Transforms a point on the plane and returns
 its new position.
@@ -204,7 +204,7 @@ its new position.
 
 Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
 
-#### updateAnchorMatrices
+### updateAnchorMatrices
 
 It's usually not necessary to call this method. If anchors and parameters
 are always set with the given methods (setAnchorOrigin(), ...), this
