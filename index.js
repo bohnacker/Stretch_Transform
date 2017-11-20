@@ -45,35 +45,35 @@ function StretchTransform() {
 
   /**
    * Adds an Anchor. 
-   * @param x
+   * @param {Number} x
    *            X coordinate for origin and target position
-   * @param y
+   * @param {Number} y
    *            Y coordinate for origin and target position
    */
 
   /**
    * Adds an Anchor. 
-   * @param p
+   * @param {Array} p
    *            Array [x, y] that will be used for origin and target position
    */
 
   /**
    * Adds an Anchor. 
-   * @param xOrigin
+   * @param {Number} xOrigin
    *            X coordinate for origin position
-   * @param yOrigin
+   * @param {Number} yOrigin
    *            Y coordinate for origin position
-   * @param xTarget
+   * @param {Number} xTarget
    *            X coordinate for target position
-   * @param yTarget
+   * @param {Number} yTarget
    *            Y coordinate for target position
    */
 
   /**
    * Adds an Anchor. 
-   * @param pOrigin
+   * @param {Array} pOrigin
    *            Array [x, y] for origin position
-   * @param pTarget
+   * @param {Array} pTarget
    *            Array [x, y] for target position
    */
   StretchTransform.prototype.addAnchor = function() {
@@ -104,12 +104,12 @@ function StretchTransform() {
 
   /**
    * Removes an Anchor.
-   * @param i  Index of the anchor
+   * @param {Number} i  Index of the anchor
    */
 
   /**
    * Removes an Anchor.
-   * @param anchor  Anchor to remove
+   * @param {Anchor} anchor  Anchor to remove
    */
 
   StretchTransform.prototype.removeAnchor = function() {
@@ -123,14 +123,14 @@ function StretchTransform() {
   }
 
   /**
-   * @return Number of anchors added to the MultiTransform
+   * @return {Number} of anchors added to the MultiTransform
    */
   StretchTransform.prototype.getAnchorCount = function() {
     return this.anchors.length;
   }
 
   /**
-   * @param i
+   * @param {Number} i
    *            Index of the anchor to return.
    */
   StretchTransform.prototype.getAnchor = function(i) {
@@ -138,13 +138,13 @@ function StretchTransform() {
   }
 
   /**
-   * @param x
+   * @param {Number} x
    *            x coordinate of the origin or target position of the anchor to return.
-   * @param y
+   * @param {Number} y
    *            y coordinate of the origin or target position of the anchor to return.
-   * @param tolerance
+   * @param {Number} tolerance
    *            Radius around Anchor
-   * @return Index of the found anchor or -1 if nothing was found at the
+   * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
 
@@ -158,13 +158,13 @@ function StretchTransform() {
   }
 
   /**
-   * @param x
+   * @param {Number} x
    *            x coordinate of the origin position of the anchor to return.
-   * @param y
+   * @param {Number} y
    *            y coordinate of the origin position of the anchor to return.
-   * @param tolerance
+   * @param {Number} tolerance
    *            Radius around Anchor
-   * @return Index of the found anchor or -1 if nothing was found at the
+   * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
   StretchTransform.prototype.getAnchorByOriginPos = function(x, y, tolerance) {
@@ -177,13 +177,13 @@ function StretchTransform() {
   }
 
   /**
-   * @param x
+   * @param {Number} x
    *            x coordinate of the target position of the anchor to return.
-   * @param y
+   * @param {Number} y
    *            y coordinate of the target position of the anchor to return.
-   * @param tolerance
+   * @param {Number} tolerance
    *            Radius around Anchor
-   * @return Index of the found anchor or -1 if nothing was found at the
+   * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
   StretchTransform.prototype.getAnchorByTargetPos = function(x, y, tolerance) {
@@ -201,11 +201,11 @@ function StretchTransform() {
 
 
   /**
-   * @param i
+   * @param {Number} i
    *            Index of the anchor.
-   * @param x
+   * @param {Number} x
    *            New x coordinate of the origin position.
-   * @param y
+   * @param {Number} y
    *            New y coordinate of the origin position.
    */
   StretchTransform.prototype.setAnchorOrigin = function(i, x, y) {
@@ -218,11 +218,11 @@ function StretchTransform() {
   }
 
   /**
-   * @param i
+   * @param {Number} i
    *            Index of the anchor.
-   * @param x
+   * @param {Number} x
    *            New x coordinate of the target position.
-   * @param y
+   * @param {Number} y
    *            New y coordinate of the target position.
    */
   StretchTransform.prototype.setAnchorTarget = function(i, x, y) {
@@ -231,7 +231,7 @@ function StretchTransform() {
   }
 
   /**
-   * @param weightingMode
+   * @param {String} weightingMode
    *            String, either 'simple' or 'directional'.
    */
   StretchTransform.prototype.setWeightingMode = function(weightingMode) {
@@ -245,21 +245,21 @@ function StretchTransform() {
   }
 
   /**
-   * @return true, if weightingMode is SIMPLE
+   * @return {Boolean} true, if weightingMode is SIMPLE
    */
   StretchTransform.prototype.isSimple = function() {
     return this.weightingMode == SIMPLE;
   }
 
   /**
-   * @return true, if weightingMode is DIRECTIONAL
+   * @return {Boolean} true, if weightingMode is DIRECTIONAL
    */
   StretchTransform.prototype.isDirectional = function() {
     return this.weightingMode == DIRECTIONAL;
   }
 
   /**
-   * @return Number
+   * @return {Number} 
    */
   StretchTransform.prototype.getWeightingExponent1 = function() {
     return this.weightingExponent1;
@@ -270,7 +270,7 @@ function StretchTransform() {
    * to all others are cumulated. The closer the other anchor lies, the
    * stronger it is weighted.
    * 
-   * @param val
+   * @param {Number} val
    *            Usually something between 0 and 2. Default = 1.
    */
   StretchTransform.prototype.setWeightingExponent1 = function(val) {
@@ -279,7 +279,7 @@ function StretchTransform() {
   }
 
   /**
-   * @return Number
+   * @return {Number} 
    */
   StretchTransform.prototype.getWeightingExponent2 = function() {
     return this.weightingExponent2;
@@ -289,7 +289,7 @@ function StretchTransform() {
    * Exponent of the weighting function when applying all anchor matrices to a
    * point.
    * 
-   * @param val
+   * @param {Number} val
    *            Usually 1 or higher. Default = 2.
    */
   StretchTransform.prototype.setWeightingExponent2 = function(val) {
@@ -298,7 +298,7 @@ function StretchTransform() {
   }
 
   /**
-   * @return Number
+   * @return {Number} 
    */
   StretchTransform.prototype.getWeightingExponent3 = function() {
     return this.weightingExponent3;
@@ -309,7 +309,7 @@ function StretchTransform() {
    * from anchor to point and from one anchor to another is quite similar.
    * Only applicable when weightingMode is DIRECTIONAL.
    * 
-   * @param val
+   * @param {Number} val
    *            Usually something between 0 and 2. Default = 1.
    */
   StretchTransform.prototype.setWeightingExponent3 = function(val) {
@@ -321,19 +321,19 @@ function StretchTransform() {
    * Main function of the class. Transforms a point on the plane and returns
    * its new position.
    * 
-   * @param x
+   * @param {Number} x
    *            X coordinate of the point to be transformed
-   * @param y
+   * @param {Number} y
    *            Y coordinate of the point to be transformed
-   * @return Transformed point as an Array [x, y]
+   * @return {Array} Transformed point as an Array [x, y]
    */
   /**
    * Main function of the class. Transforms a point on the plane and returns
    * its new position.
    * 
-   * @param p
+   * @param {Array} p
    *            Point given as an Array [x, y] to be transformed
-   * @return Transformed point as an Array [x, y]
+   * @return {Array} Transformed point as an Array [x, y]
    */
 
   StretchTransform.prototype.transform = function(p, y) {
@@ -541,12 +541,9 @@ function StretchTransform() {
 
 
 
-
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
-
-
 
 
 
@@ -740,12 +737,9 @@ function DirectionalMatrix(mat, dir) {
 
 
 
-
-
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
-
 
 
 

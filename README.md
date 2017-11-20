@@ -1,8 +1,8 @@
 # Stretch Transform
 
-Work in progress... For an explanation of this project read [this](https://hartmut-bohnacker.de/projects/stretch-transform).
+Stretch Transform is a geometric transformation that distorts a plane in a rubbery way. 
 
-In the future I want to build a javascript library to make it more accessible.
+For a more detailed explanation of this project read [this](https://hartmut-bohnacker.de/projects/stretch-transform) on my website.
 
 ## Reference
 
@@ -18,8 +18,8 @@ Adds an Anchor.
 
 **Parameters**
 
--   `x`  X coordinate for origin and target position
--   `y`  Y coordinate for origin and target position
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin and target position
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin and target position
 
 #### addAnchor
 
@@ -27,10 +27,10 @@ Adds an Anchor.
 
 **Parameters**
 
--   `xOrigin`  X coordinate for origin position
--   `yOrigin`  Y coordinate for origin position
--   `xTarget`  X coordinate for target position
--   `yTarget`  Y coordinate for target position
+-   `xOrigin` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin position
+-   `yOrigin` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin position
+-   `xTarget` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for target position
+-   `yTarget` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for target position
 
 #### addAnchor
 
@@ -38,8 +38,8 @@ Adds an Anchor.
 
 **Parameters**
 
--   `pOrigin`  Array [x, y] for origin position
--   `pTarget`  Array [x, y] for target position
+-   `pOrigin` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for origin position
+-   `pTarget` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for target position
 
 #### addAnchor
 
@@ -47,7 +47,7 @@ Adds an Anchor.
 
 **Parameters**
 
--   `p`  Array [x, y] that will be used for origin and target position
+-   `p` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] that will be used for origin and target position
 
 #### removeAnchor
 
@@ -55,7 +55,7 @@ Removes an Anchor.
 
 **Parameters**
 
--   `anchor`  Anchor to remove
+-   `anchor` **Anchor** Anchor to remove
 
 #### removeAnchor
 
@@ -63,84 +63,84 @@ Removes an Anchor.
 
 **Parameters**
 
--   `i`  Index of the anchor
+-   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor
 
 #### getAnchorCount
 
-Returns **any** Number of anchors added to the MultiTransform
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** of anchors added to the MultiTransform
 
 #### getAnchor
 
 **Parameters**
 
--   `i`  Index of the anchor to return.
+-   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor to return.
 
 #### getAnchorByPos
 
 **Parameters**
 
--   `x`  x coordinate of the origin or target position of the anchor to return.
--   `y`  y coordinate of the origin or target position of the anchor to return.
--   `tolerance`  Radius around Anchor
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** x coordinate of the origin or target position of the anchor to return.
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** y coordinate of the origin or target position of the anchor to return.
+-   `tolerance` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Radius around Anchor
 
-Returns **any** Index of the found anchor or -1 if nothing was found at the
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
 #### getAnchorByOriginPos
 
 **Parameters**
 
--   `x`  x coordinate of the origin position of the anchor to return.
--   `y`  y coordinate of the origin position of the anchor to return.
--   `tolerance`  Radius around Anchor
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** x coordinate of the origin position of the anchor to return.
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** y coordinate of the origin position of the anchor to return.
+-   `tolerance` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Radius around Anchor
 
-Returns **any** Index of the found anchor or -1 if nothing was found at the
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
 #### getAnchorByTargetPos
 
 **Parameters**
 
--   `x`  x coordinate of the target position of the anchor to return.
--   `y`  y coordinate of the target position of the anchor to return.
--   `tolerance`  Radius around Anchor
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** x coordinate of the target position of the anchor to return.
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** y coordinate of the target position of the anchor to return.
+-   `tolerance` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Radius around Anchor
 
-Returns **any** Index of the found anchor or -1 if nothing was found at the
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
 #### setAnchorOrigin
 
 **Parameters**
 
--   `i`  Index of the anchor.
--   `x`  New x coordinate of the origin position.
--   `y`  New y coordinate of the origin position.
+-   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor.
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New x coordinate of the origin position.
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New y coordinate of the origin position.
 
 #### setAnchorTarget
 
 **Parameters**
 
--   `i`  Index of the anchor.
--   `x`  New x coordinate of the target position.
--   `y`  New y coordinate of the target position.
+-   `i` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor.
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New x coordinate of the target position.
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** New y coordinate of the target position.
 
 #### setWeightingMode
 
 **Parameters**
 
--   `weightingMode`  String, either 'simple' or 'directional'.
+-   `weightingMode` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** String, either 'simple' or 'directional'.
 
 #### isSimple
 
-Returns **any** true, if weightingMode is SIMPLE
+Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true, if weightingMode is SIMPLE
 
 #### isDirectional
 
-Returns **any** true, if weightingMode is DIRECTIONAL
+Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true, if weightingMode is DIRECTIONAL
 
 #### getWeightingExponent1
 
-Returns **any** Number
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 #### setWeightingExponent1
 
@@ -150,11 +150,11 @@ stronger it is weighted.
 
 **Parameters**
 
--   `val`  Usually something between 0 and 2. Default = 1.
+-   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually something between 0 and 2. Default = 1.
 
 #### getWeightingExponent2
 
-Returns **any** Number
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 #### setWeightingExponent2
 
@@ -163,11 +163,11 @@ point.
 
 **Parameters**
 
--   `val`  Usually 1 or higher. Default = 2.
+-   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually 1 or higher. Default = 2.
 
 #### getWeightingExponent3
 
-Returns **any** Number
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 #### setWeightingExponent3
 
@@ -177,7 +177,7 @@ Only applicable when weightingMode is DIRECTIONAL.
 
 **Parameters**
 
--   `val`  Usually something between 0 and 2. Default = 1.
+-   `val` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Usually something between 0 and 2. Default = 1.
 
 #### transform
 
@@ -187,10 +187,10 @@ its new position.
 **Parameters**
 
 -   `p`  
--   `y`  Y coordinate of the point to be transformed
--   `x`  X coordinate of the point to be transformed
+-   `y` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate of the point to be transformed
+-   `x` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate of the point to be transformed
 
-Returns **any** Transformed point as an Array [x, y]
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
 
 #### transform
 
@@ -199,10 +199,10 @@ its new position.
 
 **Parameters**
 
--   `p`  Point given as an Array [x, y] to be transformed
+-   `p` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Point given as an Array [x, y] to be transformed
 -   `y`  
 
-Returns **any** Transformed point as an Array [x, y]
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
 
 #### updateAnchorMatrices
 
