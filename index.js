@@ -336,7 +336,9 @@ function StretchTransform() {
    * @return {Array} Transformed point as an Array [x, y]
    */
 
-  StretchTransform.prototype.transform = function(p, y) {
+  StretchTransform.prototype.transform = function() {
+    var p = arguments[0];
+    var y = arguments[1];
     if (y != undefined) p = V.fromValues(p, y);
     if (this.weightingMode == DIRECTIONAL) {
       return this.transformDirectional(p);
