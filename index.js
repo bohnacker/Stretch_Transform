@@ -2,11 +2,13 @@
 
 var packageInfo = require('./package.json');
 var glm = require('gl-matrix');
-var V = glm.vec2;
-var M = glm.mat2d;
+var V = glm.vec3;
+var M = glm.mat4;
+var Q = glm.quat;
+
+// var Quaternion = require('Quaternion');
 
 // console.log("%c * " + packageInfo.name + " " + packageInfo.version + " * ", "background: #ccc; color: black");
-
 
 // Constants 
 var ORIGINS = 0;
@@ -22,7 +24,6 @@ var DIRECTIONAL = 1;
  */
 function StretchTransform() {
 
-
   // Exponent of the weighting function for how the relations from one anchor
   // to all others are cumulated. The closer the other anchor lies, the
   // stronger it is weighted.
@@ -30,17 +31,10 @@ function StretchTransform() {
   // Exponent of the weighting function when applying all anchor matrices to a
   // point.
   this.weightingExponent2 = 2;
-  // Exponent of the weighting function that reflects if the direction from
-  // anchor to point and from one anchor to another is quite similar.
-  this.weightingExponent3 = 1;
 
   this.anchors = [];
 
   this.matricesUpToDate = false;
-
-  // set weightingMode to SIMPLE as a default
-  this.weightingMode = SIMPLE;
-  // this.weightingMode = DIRECTIONAL;
 
 
   /**
@@ -81,21 +75,35 @@ function StretchTransform() {
     var pTarget;
 
     if (arguments.length == 1) {
+      arguments[0][2] = arguments[0][2] || 0;
       pOrigin = arguments[0];
       pTarget = arguments[0];
     }
     if (arguments.length == 2) {
       if (arguments[0] instanceof Float32Array || arguments[0] instanceof Array) {
+        arguments[0][2] = arguments[0][2] || 0;
         pOrigin = arguments[0];
+        arguments[1][2] = arguments[1][2] || 0;
         pTarget = arguments[1];
       } else {
-        pOrigin = V.fromValues(arguments[0], arguments[1]);
-        pTarget = V.fromValues(arguments[0], arguments[1]);
+        pOrigin = V.fromValues(arguments[0], arguments[1], 0, 1);
+        pTarget = V.fromValues(arguments[0], arguments[1], 0, 1);
+      }
+    }
+    if (arguments.length == 3) {
+      if (arguments[0] instanceof Float32Array || arguments[0] instanceof Array) {
+        arguments[0][2] = arguments[0][2] || 0;
+        pOrigin = arguments[0];
+        arguments[1][2] = arguments[1][2] || 0;
+        pTarget = arguments[1];
+      } else {
+        pOrigin = V.fromValues(arguments[0], arguments[1], arguments[2], 1);
+        pTarget = V.fromValues(arguments[0], arguments[1], arguments[2], 1);
       }
     }
     if (arguments.length == 4) {
-      pOrigin = V.fromValues(arguments[0], arguments[1]);
-      pTarget = V.fromValues(arguments[2], arguments[3]);
+      pOrigin = V.fromValues(arguments[0], arguments[1], 0, 1);
+      pTarget = V.fromValues(arguments[2], arguments[3], 0, 1);
     }
 
     this.anchors.push(new Anchor(pOrigin, pTarget));
@@ -138,19 +146,18 @@ function StretchTransform() {
   }
 
   /**
-   * @param {Number} x
-   *            x coordinate of the origin or target position of the anchor to return.
-   * @param {Number} y
-   *            y coordinate of the origin or target position of the anchor to return.
+   * @param {Array} p
+   *            point [x, y, z] to search for an anchor (either origin or target position). Z coordinate is optional.
    * @param {Number} tolerance
    *            Radius around Anchor
    * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
 
-  StretchTransform.prototype.getAnchorByPos = function(x, y, tolerance) {
+  StretchTransform.prototype.getAnchorByPos = function(p, tolerance) {
+    p[2] = p[2] || 0;
     for (var i = this.anchors.length - 1; i >= 0; i--) {
-      if (H.dist(x, y, this.getAnchorOrigin(i)[0], this.getAnchorOrigin(i)[1]) <= tolerance || dist(x, y, this.getAnchorTarget(i)[0], this.getAnchorTarget(i)[1]) <= tolerance) {
+      if (H.dist(p[0], p[1], p[2], this.getAnchorOrigin(i)[0], this.getAnchorOrigin(i)[1], this.getAnchorOrigin(i)[2]) <= tolerance || H.dist(p[0], p[1], p[2], this.getAnchorTarget(i)[0], this.getAnchorTarget(i)[1], this.getAnchorTarget(i)[2]) <= tolerance) {
         return i;
       }
     }
@@ -158,18 +165,17 @@ function StretchTransform() {
   }
 
   /**
-   * @param {Number} x
-   *            x coordinate of the origin position of the anchor to return.
-   * @param {Number} y
-   *            y coordinate of the origin position of the anchor to return.
+   * @param {Array} p
+   *            point [x, y, z] to search for the origin position of an anchor. Z coordinate is optional.
    * @param {Number} tolerance
    *            Radius around Anchor
    * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
-  StretchTransform.prototype.getAnchorByOriginPos = function(x, y, tolerance) {
+  StretchTransform.prototype.getAnchorByOriginPos = function(p, tolerance) {
+    p[2] = p[2] || 0;
     for (var i = this.anchors.length - 1; i >= 0; i--) {
-      if (H.dist(x, y, this.getAnchorOrigin(i)[0], this.getAnchorOrigin(i)[1]) <= tolerance) {
+      if (H.dist(p[0], p[1], p[2], this.getAnchorOrigin(i)[0], this.getAnchorOrigin(i)[1], this.getAnchorOrigin(i)[2]) <= tolerance) {
         return i;
       }
     }
@@ -177,18 +183,17 @@ function StretchTransform() {
   }
 
   /**
-   * @param {Number} x
-   *            x coordinate of the target position of the anchor to return.
-   * @param {Number} y
-   *            y coordinate of the target position of the anchor to return.
+   * @param {Array} p
+   *            point [x, y, z] to search for the target position of an anchor. Z coordinate is optional.
    * @param {Number} tolerance
    *            Radius around Anchor
    * @return {Number} Index of the found anchor or -1 if nothing was found at the
    *         specified position
    */
-  StretchTransform.prototype.getAnchorByTargetPos = function(x, y, tolerance) {
+  StretchTransform.prototype.getAnchorByTargetPos = function(p, tolerance) {
+    p[2] = p[2] || 0;
     for (var i = this.anchors.length - 1; i >= 0; i--) {
-      if (H.dist(x, y, this.getAnchorTarget(i)[0], this.getAnchorTarget(i)[1]) <= tolerance) {
+      if (H.dist(p[0], p[1], p[2], this.getAnchorTarget(i)[0], this.getAnchorTarget(i)[1], this.getAnchorTarget(i)[2]) <= tolerance) {
         return i;
       }
     }
@@ -203,13 +208,11 @@ function StretchTransform() {
   /**
    * @param {Number} i
    *            Index of the anchor.
-   * @param {Number} x
-   *            New x coordinate of the origin position.
-   * @param {Number} y
-   *            New y coordinate of the origin position.
+   * @param {Array} p
+   *            New origin position [x, y, z]. Z coordinate is optional.
    */
-  StretchTransform.prototype.setAnchorOrigin = function(i, x, y) {
-    this.anchors[i].setOriginPosition(x, y);
+  StretchTransform.prototype.setAnchorOrigin = function(i, p) {
+    this.anchors[i].setOriginPosition(p);
     this.matricesUpToDate = false;
   }
 
@@ -220,42 +223,12 @@ function StretchTransform() {
   /**
    * @param {Number} i
    *            Index of the anchor.
-   * @param {Number} x
-   *            New x coordinate of the target position.
-   * @param {Number} y
-   *            New y coordinate of the target position.
+   * @param {Array} p
+   *            New target position [x, y, z]. Z coordinate is optional.
    */
-  StretchTransform.prototype.setAnchorTarget = function(i, x, y) {
-    this.anchors[i].setTargetPosition(x, y);
+  StretchTransform.prototype.setAnchorTarget = function(i, p) {
+    this.anchors[i].setTargetPosition(p);
     this.matricesUpToDate = false;
-  }
-
-  /**
-   * @param {String} weightingMode
-   *            String, either 'simple' or 'directional'.
-   */
-  StretchTransform.prototype.setWeightingMode = function(weightingMode) {
-    if (typeof weightingMode === 'string') {
-      if (weightingMode.toLowerCase() == "directional") this.weightingMode = DIRECTIONAL;
-      else this.weightingMode = SIMPLE;
-    } else {
-      this.weightingMode = weightingMode;
-    }
-    this.matricesUpToDate = false;
-  }
-
-  /**
-   * @return {Boolean} true, if weightingMode is SIMPLE
-   */
-  StretchTransform.prototype.isSimple = function() {
-    return this.weightingMode == SIMPLE;
-  }
-
-  /**
-   * @return {Boolean} true, if weightingMode is DIRECTIONAL
-   */
-  StretchTransform.prototype.isDirectional = function() {
-    return this.weightingMode == DIRECTIONAL;
   }
 
   /**
@@ -297,25 +270,6 @@ function StretchTransform() {
     this.matricesUpToDate = false;
   }
 
-  /**
-   * @return {Number} 
-   */
-  StretchTransform.prototype.getWeightingExponent3 = function() {
-    return this.weightingExponent3;
-  }
-
-  /**
-   * Exponent of the weighting function that factors in, if the direction
-   * from anchor to point and from one anchor to another is quite similar.
-   * Only applicable when weightingMode is DIRECTIONAL.
-   * 
-   * @param {Number} val
-   *            Usually something between 0 and 2. Default = 1.
-   */
-  StretchTransform.prototype.setWeightingExponent3 = function(val) {
-    this.weightingExponent3 = val;
-    this.matricesUpToDate = false;
-  }
 
   /**
    * Main function of the class. Transforms a point on the plane and returns
@@ -332,17 +286,15 @@ function StretchTransform() {
    * its new position.
    * 
    * @param {Array} p
-   *            Point given as an Array [x, y] to be transformed
+   *            Point given as an Array [x, y, z] to be transformed. Z coordinate is optional.
    * @return {Array} Transformed point as an Array [x, y]
    */
 
   StretchTransform.prototype.transform = function() {
     var p = arguments[0];
     var y = arguments[1];
-    if (y != undefined) p = V.fromValues(p, y);
-    if (this.weightingMode == DIRECTIONAL) {
-      return this.transformDirectional(p);
-    }
+    var z = arguments[2] || 0;
+    if (y != undefined) p = V.fromValues(p, y, z, 0);
 
     return this.transformSimple(p);
   }
@@ -364,7 +316,7 @@ function StretchTransform() {
 
       // apply the matrix of this anchor to that delta vector
       var dvecres = V.create();
-      V.transformMat2d(dvecres, dvec, this.anchors[i].getTransformMatrix());
+      V.transformMat4(dvecres, dvec, this.anchors[i].getTransformMatrix());
 
       // offset between the delta vector and the transformed delta vector
       var dvecOffset = V.create();
@@ -375,41 +327,6 @@ function StretchTransform() {
 
       // add up all offset
       V.add(dvecOffsetSum, dvecOffsetSum, dvecOffset);
-    }
-    // add the sum of all offsets to the point
-    V.add(pTransformed, pTransformed, dvecOffsetSum);
-
-    return pTransformed;
-  }
-
-  StretchTransform.prototype.transformDirectional = function(p) {
-    if (this.matricesUpToDate == false) {
-      for (var i = 0; i < this.anchors.length; i++) {
-        this.anchors[i].updateDirectionalMatrices(this.anchors);
-      }
-      this.matricesUpToDate = true;
-    }
-
-    var pTransformed = V.clone(p);
-    var weights = this.calcWeights(p, ORIGINS, -1, this.weightingExponent2);
-
-    // apply matrix-transforms to the point
-    var dvecOffsetSum = V.create();
-    for (var i = 0; i < this.anchors.length; i++) {
-      // delta vector from orig-anchor to the point
-      var dvec = V.create();
-      V.sub(dvec, p, this.anchors[i].getOriginPosition());
-
-      // apply the matrices of this anchor to that delta vector
-      var distweights = this.calcWeights(this.anchors[i].getTargetPosition(), TARGETS, i, this.weightingExponent1);
-
-      var dvecres = this.anchors[i].applyCumulatedMatrix(dvec, this.weightingExponent3, distweights);
-
-      // multiply this offset by the weight of this anchor
-      V.scale(dvecres, dvecres, weights[i]);
-
-      // add up all offset
-      V.add(dvecOffsetSum, dvecOffsetSum, dvecres);
     }
     // add the sum of all offsets to the point
     V.add(pTransformed, pTransformed, dvecOffsetSum);
@@ -428,9 +345,14 @@ function StretchTransform() {
   StretchTransform.prototype.updateAnchorMatrices = function() {
     for (var i = 0; i < this.anchors.length; i++) {
       //var matrix = this.anchors[i].getTransformMatrix();
-      var t = V.fromValues(this.anchors[i].targetPosition[0] - this.anchors[i].originPosition[0], this.anchors[i].targetPosition[1] - this.anchors[i].originPosition[1]);
+      var t = V.fromValues(
+        this.anchors[i].targetPosition[0] - this.anchors[i].originPosition[0],
+        this.anchors[i].targetPosition[1] - this.anchors[i].originPosition[1],
+        this.anchors[i].targetPosition[2] - this.anchors[i].originPosition[2],
+        0);
       var matrix = M.create();
       M.fromTranslation(matrix, t);
+
       // calculate weights for this anchor so that closer anchors have
       // more influence on its rotation and scaling
       // could also be done with the origin positions, but I think that
@@ -440,10 +362,12 @@ function StretchTransform() {
       var weights = this.calcWeights(this.anchors[i].getTargetPosition(), TARGETS, i, this.weightingExponent1);
 
       var angles = [];
+      var quaternions = [];
 
       var sFac = 1;
 
-      for (var j = 0; j < this.anchors.length; j++) {
+      for (var jj = 0; jj < 0 + this.anchors.length; jj++) {
+        var j = jj % this.anchors.length;
         var fac = weights[j];
 
         if (i != j) {
@@ -456,6 +380,21 @@ function StretchTransform() {
           var w2 = Math.atan2(targetJ[1] - targetI[1], targetJ[0] - targetI[0]);
           var w = H.angleDifference(w2, w1);
           angles.push(w);
+
+          var v1 = V.create();
+          V.sub(v1, originJ, originI);
+          V.mul(v1, v1, [1, 1, 1]);
+          V.normalize(v1, v1);
+          var v2 = V.create();
+          V.sub(v2, targetJ, targetI);
+          V.mul(v2, v2, [1, 1, 1]);
+          V.normalize(v2, v2);
+
+          var q = Q.create();
+          Q.rotationTo(q, v1, v2);
+          // var q = Quaternion.fromBetweenVectors(v1, v2);
+          quaternions.push(q);
+          // // console.log(q);
 
           var d1 = V.dist(originJ, originI);
           var d2 = V.dist(targetJ, targetI);
@@ -470,11 +409,22 @@ function StretchTransform() {
           sFac *= s;
         } else {
           angles.push(0);
+          // quaternions.push(new Quaternion());
+          quaternions.push(Q.create());
         }
       }
 
-      M.rotate(matrix, matrix, H.angleAverage(angles, weights));
-      M.scale(matrix, matrix, [sFac, sFac]);
+      // var quatAv = H.quaternionAverage(quaternions, weights);
+      // var rotationMatrix = M.fromValues(...quatAv.toMatrix4());
+
+      var quatAv = H.quaternionAverage(quaternions, weights);
+      var rotationMatrix = M.create();
+      M.fromQuat(rotationMatrix, quatAv);
+
+
+      M.mul(matrix, matrix, rotationMatrix);
+      // M.rotateZ(matrix, matrix, H.angleAverage(angles, weights));
+      M.scale(matrix, matrix, [sFac, sFac, sFac]);
 
       this.anchors[i].setTransformMatrix(matrix);
     }
@@ -567,6 +517,7 @@ function Anchor(pOrigin, pTarget) {
 
   Anchor.prototype.setOriginPosition = function() {
     if (arguments.length == 1) {
+      arguments[0][2] = arguments[0][2] || 0;
       this.originPosition = V.clone(arguments[0]);
     } else {
       this.originPosition[0] = arguments[0];
@@ -580,6 +531,7 @@ function Anchor(pOrigin, pTarget) {
 
   Anchor.prototype.setTargetPosition = function() {
     if (arguments.length == 1) {
+      arguments[0][2] = arguments[0][2] || 0;
       this.targetPosition = V.clone(arguments[0]);
     } else {
       this.targetPosition[0] = arguments[0];
@@ -612,7 +564,7 @@ function Anchor(pOrigin, pTarget) {
         var targetJ = otherAnchor.getTargetPosition();
 
         // translation
-        M.fromTranslation(matrix, V.fromValues(this.targetPosition[0] - this.originPosition[0], this.targetPosition[1] - this.originPosition[1]));
+        M.fromTranslation(matrix, V.fromValues(this.targetPosition[0] - this.originPosition[0], this.targetPosition[1] - this.originPosition[1], 0, 0));
 
         // rotation
         var w1 = Math.atan2(originJ[1] - originI[1], originJ[0] - originI[0]);
@@ -681,7 +633,7 @@ function Anchor(pOrigin, pTarget) {
         weights[i] = weights[i] / sum;
 
         var aToPTrans = V.create();
-        V.transformMat2d(aToPTrans, aToP, matrix);
+        V.transformMat4(aToPTrans, aToP, matrix);
 
         // offset between the delta vector and the transformed delta vector
         var dvecOffset = V.create();
@@ -732,11 +684,6 @@ function Anchor(pOrigin, pTarget) {
 }
 
 
-function DirectionalMatrix(mat, dir) {
-  this.matrix = M.clone(mat);
-  this.matrixDirection = V.clone(dir);
-}
-
 
 
 // -----------------------------------------------------------------------------------
@@ -777,7 +724,7 @@ var H = {
     var res = new V.create();
 
     for (var i = 0; i < angles.length; i++) {
-      var v = V.fromValues(Math.cos(angles[i]), Math.sin(angles[i]));
+      var v = V.fromValues(Math.cos(angles[i]), Math.sin(angles[i]), 0, 0);
       V.scale(v, v, weights[i]);
       V.add(res, res, v);
     }
@@ -785,8 +732,50 @@ var H = {
     return Math.atan2(res[1], res[0]);
   },
 
-  dist: function(x1, y1, x2, y2) {
-    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+  // calculates the weighted sperical interpolation from a list of quaternions
+  quaternionAverage: function(quaternions, weights) {
+    var len = weights.length;
+
+    // sumarize weights
+    var weightSums = [];
+    weightSums[0] = weights[0];
+    for (var i = 1; i < len; i++) {
+      weightSums[i] = weightSums[i - 1] + weights[i];
+    }
+    // if all weights are 0, return the first quaternion
+    if (weightSums[len - 1] == 0) {
+      return quaternions[0];
+    }
+
+    // interpolate quaternions
+    // var res = quaternions[0].clone();
+    var res = Q.clone(quaternions[0]);
+    for (i = 1; i < len; i++) {
+      var amount = weights[i] / float(weightSums[i]);
+      // res = res.slerp(quaternions[i])(amount)
+      Q.slerp(res, res, quaternions[i], amount);
+    }
+    return res;
+  },
+
+  dist: function() {
+    let x1, y1, z1, x2, y2, z2
+    if (arguments.length == 4) {
+      x1 = arguments[0];
+      y1 = arguments[1];
+      z1 = 0;
+      x2 = arguments[2];
+      y2 = arguments[3];
+      z2 = 0;
+    } else {
+      x1 = arguments[0];
+      y1 = arguments[1];
+      z1 = arguments[2];
+      x2 = arguments[3];
+      y2 = arguments[4];
+      z2 = arguments[5];
+    }
+    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
   }
 
 }

@@ -1,9 +1,8 @@
 // KEYS:
 // + :                      add new anchor at mouse position
-// DELETE/BACKSPACE :       delete selected anchor
-// q/a :                    increase/decrease exponent for matrix direction weighting
-// w/s :                    increase/decrease exponent for matrix distance weighting
-// e/d :                    increase/decrease exponent for point weighting
+// - :                      delete selected anchor
+// q/a :                    increase/decrease exponent for matrix distance weighting
+// w/s :                    increase/decrease exponent for point weighting
 //
 // MOUSE:
 // click or drag:           drag anchor origin or target
@@ -31,14 +30,12 @@ function setup() {
   anchorColor = color(0, 150, 0);
   anchorHiColor = color(200, 100, 0);
 
-  // myTransform.addAnchor([margin, margin]);
-  // myTransform.addAnchor([width - margin, margin]);
-  // myTransform.addAnchor([width - margin, height - margin]);
-  // myTransform.addAnchor([margin, height - margin]);
-  // myTransform.addAnchor([300, 300], [350, 330]);
-  // myTransform.addAnchor([400, 400], [350, 370]);
-
-  // myTransform.setWeightingMode(StretchTransform.DIRECTIONAL);
+  myTransform.addAnchor([margin, margin]);
+  myTransform.addAnchor([width - margin, margin]);
+  myTransform.addAnchor([width - margin, height - margin]);
+  myTransform.addAnchor([margin, height - margin]);
+  myTransform.addAnchor([300, 300], [350, 330]);
+  myTransform.addAnchor([400, 400], [350, 370]);
 
 }
 
@@ -52,10 +49,10 @@ function draw() {
 
   if (anchorNum >= 0) {
     if (dragOrigin) {
-      myTransform.setAnchorOrigin(anchorNum, mouseX, mouseY);
+      myTransform.setAnchorOrigin(anchorNum, [mouseX, mouseY]);
     }
     if (dragTarget) {
-      myTransform.setAnchorTarget(anchorNum, mouseX, mouseY);
+      myTransform.setAnchorTarget(anchorNum, [mouseX, mouseY]);
     }
   }
 
@@ -113,8 +110,8 @@ function mousePressed() {
   dragTarget = false;
   anchorNum = -1;
 
-  var io = myTransform.getAnchorByOriginPos(mouseX, mouseY, 10);
-  var it = myTransform.getAnchorByTargetPos(mouseX, mouseY, 10);
+  var io = myTransform.getAnchorByOriginPos([mouseX, mouseY], 10);
+  var it = myTransform.getAnchorByTargetPos([mouseX, mouseY], 10);
 
   if (it >= 0) {
     anchorNum = it;
@@ -143,44 +140,26 @@ function keyTyped() {
     anchorNum = myTransform.getAnchorCount() - 1;
   }
 
-  if (keyCode == DELETE || keyCode == BACKSPACE) {
+  if (key == '-') {
     if (anchorNum >= 0) {
       myTransform.removeAnchor(anchorNum);
       anchorNum = -1;
     }
   }
 
-  if (key == ' ') {
-    if (myTransform.isSimple()) {
-      myTransform.setWeightingMode("directional");
-      console.log("weightingMode = DIRECTIONAL");
-    } else {
-      myTransform.setWeightingMode("simple");
-      console.log("weightingMode = SIMPLE");
-    }
-  }
-
   if (key == 'q' || key == 'Q') {
-    myTransform.setWeightingExponent3(myTransform.getWeightingExponent3() + 0.5);
-    console.log("exponent3 = " + myTransform.getWeightingExponent3());
-  }
-  if (key == 'a' || key == 'A') {
-    myTransform.setWeightingExponent3(myTransform.getWeightingExponent3() - 0.5);
-    console.log("exponent3 = " + myTransform.getWeightingExponent3());
-  }
-  if (key == 'w' || key == 'W') {
     myTransform.setWeightingExponent1(myTransform.getWeightingExponent1() + 0.5);
     console.log("exponent1 = " + myTransform.getWeightingExponent1());
   }
-  if (key == 's' || key == 'S') {
+  if (key == 'a' || key == 'A') {
     myTransform.setWeightingExponent1(myTransform.getWeightingExponent1() - 0.5);
     console.log("exponent1 = " + myTransform.getWeightingExponent1());
   }
-  if (key == 'e' || key == 'E') {
+  if (key == 'w' || key == 'W') {
     myTransform.setWeightingExponent2(myTransform.getWeightingExponent2() + 0.5);
     console.log("exponent2 = " + myTransform.getWeightingExponent2());
   }
-  if (key == 'd' || key == 'D') {
+  if (key == 's' || key == 'S') {
     myTransform.setWeightingExponent2(myTransform.getWeightingExponent2() - 0.5);
     console.log("exponent2 = " + myTransform.getWeightingExponent2());
   }
