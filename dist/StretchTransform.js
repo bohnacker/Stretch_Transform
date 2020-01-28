@@ -393,9 +393,7 @@ function StretchTransform() {
 
           var q = Q.create();
           Q.rotationTo(q, v1, v2);
-          // var q = Quaternion.fromBetweenVectors(v1, v2);
           quaternions.push(q);
-          // // console.log(q);
 
           var d1 = V.dist(originJ, originI);
           var d2 = V.dist(targetJ, targetI);
@@ -410,13 +408,9 @@ function StretchTransform() {
           sFac *= s;
         } else {
           angles.push(0);
-          // quaternions.push(new Quaternion());
           quaternions.push(Q.create());
         }
       }
-
-      // var quatAv = H.quaternionAverage(quaternions, weights);
-      // var rotationMatrix = M.fromValues(...quatAv.toMatrix4());
 
       var quatAv = H.quaternionAverage(quaternions, weights);
       var rotationMatrix = M.create();
@@ -424,7 +418,6 @@ function StretchTransform() {
 
 
       M.mul(matrix, matrix, rotationMatrix);
-      // M.rotateZ(matrix, matrix, H.angleAverage(angles, weights));
       M.scale(matrix, matrix, [sFac, sFac, sFac]);
 
       this.anchors[i].setTransformMatrix(matrix);
@@ -749,18 +742,16 @@ var H = {
     }
 
     // interpolate quaternions
-    // var res = quaternions[0].clone();
     var res = Q.clone(quaternions[0]);
     for (i = 1; i < len; i++) {
       var amount = weights[i] / float(weightSums[i]);
-      // res = res.slerp(quaternions[i])(amount)
       Q.slerp(res, res, quaternions[i], amount);
     }
     return res;
   },
 
   dist: function() {
-    let x1, y1, z1, x2, y2, z2
+    var x1, y1, z1, x2, y2, z2
     if (arguments.length == 4) {
       x1 = arguments[0];
       y1 = arguments[1];
