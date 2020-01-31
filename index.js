@@ -43,12 +43,14 @@ function StretchTransform() {
    *            X coordinate for origin and target position
    * @param {Number} y
    *            Y coordinate for origin and target position
+   * @return {Anchor} The new anchor
    */
 
   /**
    * Adds an Anchor. 
    * @param {Array} p
    *            Array [x, y] that will be used for origin and target position
+   * @return {Anchor} The new anchor
    */
 
   /**
@@ -61,6 +63,7 @@ function StretchTransform() {
    *            X coordinate for target position
    * @param {Number} yTarget
    *            Y coordinate for target position
+   * @return {Anchor} The new anchor
    */
 
   /**
@@ -69,6 +72,7 @@ function StretchTransform() {
    *            Array [x, y] for origin position
    * @param {Array} pTarget
    *            Array [x, y] for target position
+   * @return {Anchor} The new anchor
    */
   StretchTransform.prototype.addAnchor = function() {
     var pOrigin;
@@ -106,8 +110,11 @@ function StretchTransform() {
       pTarget = V.fromValues(arguments[2], arguments[3], 0, 1);
     }
 
-    this.anchors.push(new Anchor(pOrigin, pTarget));
+    var anchor = new Anchor(pOrigin, pTarget);
+    this.anchors.push(anchor);
     this.matricesUpToDate = false;
+
+    return anchor;
   }
 
   /**

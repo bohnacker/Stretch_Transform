@@ -46,6 +46,8 @@ Adds an Anchor.
 
 -   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] that will be used for origin and target position
 
+Returns **Anchor** The new anchor
+
 ### addAnchor
 
 Adds an Anchor.
@@ -57,6 +59,8 @@ Adds an Anchor.
 -   `xTarget` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for target position
 -   `yTarget` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for target position
 
+Returns **Anchor** The new anchor
+
 ### addAnchor
 
 Adds an Anchor.
@@ -66,6 +70,8 @@ Adds an Anchor.
 -   `pOrigin` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for origin position
 -   `pTarget` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for target position
 
+Returns **Anchor** The new anchor
+
 ### addAnchor
 
 Adds an Anchor.
@@ -74,6 +80,8 @@ Adds an Anchor.
 
 -   `x` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin and target position
 -   `y` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin and target position
+
+Returns **Anchor** The new anchor
 
 ### removeAnchor
 
