@@ -1,6 +1,4 @@
 // KEYS:
-// + :                      add new anchor at mouse position
-// - :                      delete selected anchor
 // q/a :                    increase/decrease offset of first anchor
 
 'use strict';
@@ -22,7 +20,8 @@ var dragTarget = false;
 var offset = 150;
 
 function setup() {
-  createCanvas(700, 700, WEBGL);
+  var canvas = createCanvas(700, 700, WEBGL);
+  canvas.parent('#sketch-holder');
 
   anchorColor = color(120);
   anchorHiColor = color(0);
@@ -31,11 +30,6 @@ function setup() {
   myTransform.addAnchor([-cubeW, -cubeW, cubeW]);
   myTransform.addAnchor([-cubeW, cubeW, -cubeW]);
   myTransform.addAnchor([cubeW, -cubeW, -cubeW]);
-  // myTransform.addAnchor([300, 0, 300], [350, 0, 330]);
-  // myTransform.addAnchor([400, 0, 400], [350, 0, 370]);
-
-  // myTransform.setWeightingMode(StretchTransform.DIRECTIONAL);
-
 }
 
 
@@ -120,47 +114,10 @@ function draw() {
 }
 
 
-// function mousePressed() {
-//   dragOrigin = false;
-//   dragTarget = false;
-//   anchorNum = -1;
-
-//   var io = myTransform.getAnchorByOriginPos([0, mouseX, mouseY], 10);
-//   var it = myTransform.getAnchorByTargetPos([0, mouseX, mouseY], 10);
-
-//   if (it >= 0) {
-//     anchorNum = it;
-//     dragTarget = true;
-//   } else if (io >= 0) {
-//     anchorNum = io;
-//     dragOrigin = true;
-//   } else {
-//     myTransform.addAnchor([mouseX, 0, mouseY]);
-//     anchorNum = myTransform.anchors.length - 1;
-//     dragTarget = true;
-//   }
-// }
-
-// function mouseReleased() {
-//   dragOrigin = false;
-//   dragTarget = false;
-// }
 
 
 
 function keyTyped() {
-
-  if (key == '+') {
-    myTransform.addAnchor([0, mouseX, mouseY]);
-    anchorNum = myTransform.getAnchorCount() - 1;
-  }
-
-  if (key == '-') {
-    if (anchorNum >= 0) {
-      myTransform.removeAnchor(anchorNum);
-      anchorNum = -1;
-    }
-  }
 
   if (key == 'q' || key == 'Q') {
     offset += 10;

@@ -5,7 +5,24 @@
     <script src="../../dist/StretchTransform.js"></script>
     <script src="../lib/p5.min.js"></script>
     <script src="sketch.js"></script>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+      }
+    </style>
   </head>
   <body>
+    <div id="sketch-holder">
+    </div>
+    <p>
+      KEYS:<br>
+      + : add new anchor at mouse position<br>
+      - : delete selected anchor<br>
+      q/a : increase/decrease exponent for matrix distance weighting<br>
+      w/s : increase/decrease exponent for point weighting<br>
+      <br>
+      MOUSE:<br>
+      click or drag: drag anchor origin or target
+    </p>
   </body>
 </html>

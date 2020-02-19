@@ -18,6 +18,7 @@ var TARGETS = 1;
 var SIMPLE = 0;
 var DIRECTIONAL = 1;
 
+var TWO_PI = Math.PI * 2;
 
 /**
  * new StretchTransform() create an empty StretchTransform. 
@@ -410,7 +411,7 @@ function StretchTransform() {
           else if (d1 == 0)
             s = 10;
 
-          s = pow(s, fac);
+          s = Math.pow(s, fac);
           sFac *= s;
         } else {
           angles.push(0);
@@ -472,7 +473,7 @@ function StretchTransform() {
 
       for (var i = 0; i < n; i++) {
         if (i != excludeIndex) {
-          distfacs[i] = 1 / (pow(dists[i], exponent));
+          distfacs[i] = 1 / (Math.pow(dists[i], exponent));
           sum += distfacs[i];
         } else {
           distfacs[i] = 0;
@@ -750,7 +751,7 @@ var H = {
     // interpolate quaternions
     var res = Q.clone(quaternions[0]);
     for (i = 1; i < len; i++) {
-      var amount = weights[i] / float(weightSums[i]);
+      var amount = weights[i] / parseFloat(weightSums[i]);
       Q.slerp(res, res, quaternions[i], amount);
     }
     return res;

@@ -25,7 +25,8 @@ var dragTarget = false;
 
 
 function setup() {
-  createCanvas(700, 700);
+  canvas = createCanvas(700, 700);
+  canvas.parent('#sketch-holder');
 
   anchorColor = color(0, 150, 0);
   anchorHiColor = color(200, 100, 0);
