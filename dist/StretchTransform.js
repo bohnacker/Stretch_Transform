@@ -15,10 +15,6 @@ var Q = glm.quat;
 var ORIGINS = 0;
 var TARGETS = 1;
 
-// Constants for weightingMode
-var SIMPLE = 0;
-var DIRECTIONAL = 1;
-
 var TWO_PI = Math.PI * 2;
 
 /**
@@ -505,7 +501,6 @@ function Anchor(pOrigin, pTarget) {
   this.originPosition = V.create();
   this.targetPosition = V.create();
   this.transformMatrix = M.create();
-  this.directionalMatrices = [];
 
   if (pTarget == undefined) pTarget = pOrigin;
 
@@ -551,138 +546,6 @@ function Anchor(pOrigin, pTarget) {
   }
 
 
-  Anchor.prototype.updateDirectionalMatrices = function(anchors) {
-    this.directionalMatrices = [];
-
-    for (var i = 0; i < anchors.length; i++) {
-      var otherAnchor = anchors[i];
-      var matrix = M.create();
-      var matrixDirection = V.create();
-
-      if (otherAnchor != this) {
-        var originI = this.getOriginPosition();
-        var originJ = otherAnchor.getOriginPosition();
-        var targetI = this.getTargetPosition();
-        var targetJ = otherAnchor.getTargetPosition();
-
-        // translation
-        M.fromTranslation(matrix, V.fromValues(this.targetPosition[0] - this.originPosition[0], this.targetPosition[1] - this.originPosition[1], 0, 0));
-
-        // rotation
-        var w1 = Math.atan2(originJ[1] - originI[1], originJ[0] - originI[0]);
-        var w2 = Math.atan2(targetJ[1] - targetI[1], targetJ[0] - targetI[0]);
-        var w = H.angleDifference(w2, w1);
-
-        M.rotate(matrix, matrix, w);
-
-        // scaling
-        var d1 = V.dist(originJ, originI);
-        var d2 = V.dist(targetJ, targetI);
-        var s = d2 / d1;
-
-        if (d1 == 0 && d2 == 0)
-          s = 1;
-        else if (d1 == 0)
-          s = 10;
-
-        M.scale(matrix, matrix, [s, s]);
-
-        // direction for this directionalMatrix
-        matrixDirection = V.clone(originJ);
-        V.sub(matrixDirection, matrixDirection, originI);
-        V.normalize(matrixDirection, matrixDirection);
-
-        this.directionalMatrices.push(new DirectionalMatrix(matrix, matrixDirection));
-      } else {
-        this.directionalMatrices.push(null);
-      }
-    }
-  }
-
-  Anchor.prototype.applyCumulatedMatrix = function(aToP, exponent, distweights) {
-    var aToPResult = V.create();
-
-    var aToPNorm = V.clone(aToP);
-    V.normalize(aToPNorm, aToPNorm);
-
-    var weights = [];
-    var sum = 0;
-
-    for (var i = 0; i < this.directionalMatrices.length; i++) {
-      if (this.directionalMatrices[i] != null) {
-        var w = 1;
-
-        // weight depending on direction from anchor to point
-        if (V.len(this.directionalMatrices[i].matrixDirection) > 0 && V.len(aToPNorm) > 0) {
-          w = V.dot(this.directionalMatrices[i].matrixDirection, aToPNorm) + 1;
-          if (w < 0) w = 0;
-          w = Math.pow(w, exponent);
-        }
-
-        // weight depending on distance
-        w *= distweights[i];
-        // w *= (0.5 + 0.5 * distweights[i]);
-
-        weights[i] = w;
-        sum += weights[i];
-      }
-    }
-
-    for (var i = 0; i < this.directionalMatrices.length; i++) {
-      if (this.directionalMatrices[i] != null) {
-        var matrix = this.directionalMatrices[i].matrix;
-
-        weights[i] = weights[i] / sum;
-
-        var aToPTrans = V.create();
-        V.transformMat4(aToPTrans, aToP, matrix);
-
-        // offset between the delta vector and the transformed delta vector
-        var dvecOffset = V.create();
-        V.sub(dvecOffset, aToPTrans, aToP);
-
-        // multiply this offset by the weight of this anchor
-        V.scale(dvecOffset, dvecOffset, weights[i]);
-
-        // add up all offset
-        V.add(aToPResult, aToPResult, dvecOffset);
-      }
-    }
-
-    return aToPResult;
-  }
-
-
-
-  /*
-   * float[] calcWeights(PVector p, ArrayList<Anchor> anchors, int mode) {
-   * 
-   * // calculate distances between point and all original anchors float[]
-   * dists = new float[anchors.length]; int n = dists.length;
-   * 
-   * int k = -1; float minDist = 10000000;
-   * 
-   * for (int i = 0; i < n; i++) { PVector otherPoint; if (mode ==
-   * MultiTransform.ORIGINS) { otherPoint =
-   * anchors[i].getOriginPosition(); } else { otherPoint =
-   * anchors[i].getTargetPosition(); }
-   * 
-   * dists[i] = PVector.dist(p, otherPoint); if (dists[i] < minDist && i !=
-   * excludeIndex) { minDist = dists[i]; k = i; } }
-   * 
-   * // calc attraction weights (sum of all weights must be 1) float[] weights
-   * = new float[n];
-   * 
-   * if (minDist == 0) { weights[k] = 1; } else { float[] distfacs = new
-   * float[n]; float sum = 0;
-   * 
-   * for (int i = 0; i < n; i++) { if (i != excludeIndex) { distfacs[i] = 1f /
-   * (pow(dists[i], 1)); sum += distfacs[i]; } }
-   * 
-   * for (int i = 0; i < n; i++) { weights[i] = distfacs[i] / sum; } }
-   * 
-   * return weights; }
-   */
 }
 
 
@@ -814,7 +677,7 @@ THE SOFTWARE.
 },{}],3:[function(require,module,exports){
 module.exports={
   "name": "StretchTransform.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A javascript library to transform a plane in a rubbery way.",
   "license": "MIT",
   "main": "index.js",
