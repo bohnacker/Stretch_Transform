@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="../../dist/StretchTransform.js"></script>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      // Create a new StrechTransform 
+      var myTransform = new StretchTransform();
+
+      // Add some anchors. The first point will be transformed exactly to the second.
+      myTransform.addAnchor([0, 0], [200, 100]);
+      myTransform.addAnchor([300, 0], [300, 350]);
+      myTransform.addAnchor([150, 300], [100, 300]);
+
+      var result = myTransform.transform(0, 0);
+      print('Giving an original position of an anchor will result in its target poisition.')
+      print('So, transforming point (0, 0) results in:')
+      print(result.toString());
+      print('------------------------------------------')
+
+      var result = myTransform.transform(150, 150);
+      print('Transforming point (150, 150) results in:')
+      print(result);
+      print('------------------------------------------')
+
+      var result = myTransform.transform(150, 150, 100);
+      print('Every StrechTransform is done in 3d space even if you give only 2d coordinates for the anchors.')
+      print('Transforming point (150, 150, 100) results in:')
+      print(result);
+      print('------------------------------------------')
+
+      function print(text) {
+        document.body.append(text);
+        document.body.append(document.createElement('br'));
+      }
+    </script>
+
+  </body>
+</html>
