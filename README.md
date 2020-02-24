@@ -9,7 +9,14 @@ For a more detailed explanation of this project read [this](https://hartmut-bohn
 
 ## Quick start
 
-#### 1. Load the library to your html file:
+#### 1. Install the library:
+
+Via NPM:
+```
+npm i stretch-transform
+```
+
+Or in your html file:
 ``` html
 <script src="StretchTransform.js"></script>
 ```
