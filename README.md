@@ -9,17 +9,17 @@ For a more detailed explanation of this project read [this](https://hartmut-bohn
 
 ## Quick start
 
-### 1. Load the library to your html file:
+#### 1. Load the library to your html file:
 ``` html
 <script src="StretchTransform.js"></script>
 ```
 
-### 2. Start creating a new StretchTransform:
+#### 2. Start creating a new StretchTransform:
 ``` javascript
 var myTransform = new StretchTransform();
 ```
 
-### 3. Add some anchors.
+#### 3. Add some anchors.
 
 Usually you'll give two points as parameters. The first point (origin) will be transformed exactly to the second point (target).
 ``` javascript
@@ -36,7 +36,7 @@ StretchTransform also works in 3D space. In fact, it always does.
 myTransform.addAnchor([100, 200, -150], [300, 300, 0]);
 ```
 
-### 4. Transform any point you want.
+#### 4. Transform any point you want.
 ``` javascript
 var result = myTransform.transform([200, 200, 50]);
 ```
