@@ -451,7 +451,9 @@ function StretchTransform() {
 // -----------------------------------------------------------------------------------
 
 
-
+/**
+ * An Anchor has an origin an a target position. Usually you won't have to deal with it directly. Still, there are some functions which could come handy.
+ */
 function Anchor(pOrigin, pTarget) {
   this.originPosition = V.create();
   this.targetPosition = V.create();
@@ -640,7 +642,7 @@ THE SOFTWARE.
 },{}],3:[function(require,module,exports){
 module.exports={
   "name": "StretchTransform.js",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A javascript library to transform a plane in a rubbery way.",
   "license": "MIT",
   "main": "index.js",
