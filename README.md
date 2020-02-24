@@ -2,7 +2,7 @@
 
 Stretch Transform is a geometric transformation that distorts a plane or 3D space in a rubbery way. 
 
-![Cover](/images/cover.png)
+![Cover](/images/cover.jpg)
 
 For a more detailed explanation of this project read [this](https://hartmut-bohnacker.de/projects/stretch-transform) on my website.
 

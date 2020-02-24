@@ -1,5 +1,5 @@
 {
-  "name": "StretchTransform.js",
+  "name": "stretch-transform",
   "version": "0.3.0",
   "description": "A javascript library to transform a plane or 3d space in a rubbery way.",
   "license": "MIT",
