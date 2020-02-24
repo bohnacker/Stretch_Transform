@@ -6,8 +6,6 @@ var V = glm.vec3;
 var M = glm.mat4;
 var Q = glm.quat;
 
-// var Quaternion = require('Quaternion');
-
 // console.log("%c * " + packageInfo.name + " " + packageInfo.version + " * ", "background: #ccc; color: black");
 
 // Constants 
@@ -17,7 +15,7 @@ var TARGETS = 1;
 var TWO_PI = Math.PI * 2;
 
 /**
- * new StretchTransform() create an empty StretchTransform. 
+ * new StretchTransform() creates an empty StretchTransform. 
  */
 function StretchTransform() {
 
@@ -35,42 +33,21 @@ function StretchTransform() {
 
 
   /**
-   * Adds an Anchor. 
-   * @param {Number} x
-   *            X coordinate for origin and target position
-   * @param {Number} y
-   *            Y coordinate for origin and target position
-   * @return {Anchor} The new anchor
-   */
-
-  /**
-   * Adds an Anchor. 
+   * Adds an Anchor where origin and target is the same. You can change either of them later on. 
    * @param {Array} p
-   *            Array [x, y] that will be used for origin and target position
+   *            Array [x, y, z] that will be used for origin and target position. Z coordinate is optional.
    * @return {Anchor} The new anchor
    */
 
   /**
-   * Adds an Anchor. 
-   * @param {Number} xOrigin
-   *            X coordinate for origin position
-   * @param {Number} yOrigin
-   *            Y coordinate for origin position
-   * @param {Number} xTarget
-   *            X coordinate for target position
-   * @param {Number} yTarget
-   *            Y coordinate for target position
-   * @return {Anchor} The new anchor
-   */
-
-  /**
-   * Adds an Anchor. 
+   * Adds an Anchor. pOrigin will be transformed to pTarget.
    * @param {Array} pOrigin
-   *            Array [x, y] for origin position
+   *            Array [x, y, z] for the origin position. Z coordinate is optional.
    * @param {Array} pTarget
-   *            Array [x, y] for target position
+   *            Array [x, y, z] for the target position. Z coordinate is optional.
    * @return {Anchor} The new anchor
    */
+
   StretchTransform.prototype.addAnchor = function() {
     var pOrigin;
     var pTarget;
@@ -91,21 +68,6 @@ function StretchTransform() {
         pTarget = V.fromValues(arguments[0], arguments[1], 0, 1);
       }
     }
-    if (arguments.length == 3) {
-      if (arguments[0] instanceof Float32Array || arguments[0] instanceof Array) {
-        arguments[0][2] = arguments[0][2] || 0;
-        pOrigin = arguments[0];
-        arguments[1][2] = arguments[1][2] || 0;
-        pTarget = arguments[1];
-      } else {
-        pOrigin = V.fromValues(arguments[0], arguments[1], arguments[2], 1);
-        pTarget = V.fromValues(arguments[0], arguments[1], arguments[2], 1);
-      }
-    }
-    if (arguments.length == 4) {
-      pOrigin = V.fromValues(arguments[0], arguments[1], 0, 1);
-      pTarget = V.fromValues(arguments[2], arguments[3], 0, 1);
-    }
 
     var anchor = new Anchor(pOrigin, pTarget);
     this.anchors.push(anchor);
@@ -115,12 +77,12 @@ function StretchTransform() {
   }
 
   /**
-   * Removes an Anchor.
+   * Removes an Anchor giving the index of the anchor.
    * @param {Number} i  Index of the anchor
    */
 
   /**
-   * Removes an Anchor.
+   * Removes an Anchor giving the anchor
    * @param {Anchor} anchor  Anchor to remove
    */
 
@@ -154,8 +116,7 @@ function StretchTransform() {
    *            point [x, y, z] to search for an anchor (either origin or target position). Z coordinate is optional.
    * @param {Number} tolerance
    *            Radius around Anchor
-   * @return {Number} Index of the found anchor or -1 if nothing was found at the
-   *         specified position
+   * @return {Number} Index of the found anchor or -1 if nothing was found at the specified position
    */
 
   StretchTransform.prototype.getAnchorByPos = function(p, tolerance) {
@@ -204,6 +165,12 @@ function StretchTransform() {
     return -1;
   }
 
+  /**
+   * @param {Number} i
+   *            Index of the anchor.
+   * @return {Array} 
+   *            The origin position.
+   */
   StretchTransform.prototype.getAnchorOrigin = function(i) {
     return this.anchors[i].getOriginPosition();
   }
@@ -220,6 +187,12 @@ function StretchTransform() {
     this.matricesUpToDate = false;
   }
 
+  /**
+   * @param {Number} i
+   *            Index of the anchor.
+   * @return {Array} 
+   *            The target position.
+   */
   StretchTransform.prototype.getAnchorTarget = function(i) {
     return this.anchors[i].getTargetPosition();
   }
@@ -243,9 +216,7 @@ function StretchTransform() {
   }
 
   /**
-   * Exponent of the weighting function. Defines how the relations from one anchor
-   * to all others are cumulated. The closer the other anchor lies, the
-   * stronger it is weighted.
+   * Exponent of the weighting function. Defines how the relations from one anchor to all others are cumulated. The closer the other anchor lies, the stronger it is weighted.
    * 
    * @param {Number} val
    *            Usually something between 0 and 2. Default = 1.
@@ -279,31 +250,15 @@ function StretchTransform() {
    * Main function of the class. Transforms a point on the plane and returns
    * its new position.
    * 
-   * @param {Number} x
-   *            X coordinate of the point to be transformed
-   * @param {Number} y
-   *            Y coordinate of the point to be transformed
-   * @return {Array} Transformed point as an Array [x, y]
-   */
-  /**
-   * Main function of the class. Transforms a point on the plane and returns
-   * its new position.
-   * 
    * @param {Array} p
    *            Point given as an Array [x, y, z] to be transformed. Z coordinate is optional.
-   * @return {Array} Transformed point as an Array [x, y]
+   * @return {Array} Transformed point as an Array.
    */
 
   StretchTransform.prototype.transform = function() {
     var p = arguments[0];
-    var y = arguments[1];
-    var z = arguments[2] || 0;
-    if (y != undefined) p = V.fromValues(p, y, z, 0);
+    p = V.fromValues(p[0], p[1], p[2] || 0);
 
-    return this.transformSimple(p);
-  }
-
-  StretchTransform.prototype.transformSimple = function(p) {
     if (this.matricesUpToDate == false) {
       this.updateAnchorMatrices();
     }
@@ -495,7 +450,9 @@ function StretchTransform() {
 // -----------------------------------------------------------------------------------
 
 
-
+/**
+ * An Anchor has an origin an a target position. Usually you won't have to deal with it directly. Still, there are some functions which could come handy.
+ */
 function Anchor(pOrigin, pTarget) {
   this.originPosition = V.create();
   this.targetPosition = V.create();
@@ -507,35 +464,44 @@ function Anchor(pOrigin, pTarget) {
   this.targetPosition = V.clone(pTarget);
 
 
+  /**
+   * @return {Array} 
+   *            The origin position.
+   */
   Anchor.prototype.getOriginPosition = function() {
     return V.clone(this.originPosition);
   }
 
+  /**
+   * @param {Array} p
+   *            New origin position [x, y, z]. Z coordinate is optional.
+   */
   Anchor.prototype.setOriginPosition = function() {
-    if (arguments.length == 1) {
-      arguments[0][2] = arguments[0][2] || 0;
-      this.originPosition = V.clone(arguments[0]);
-    } else {
-      this.originPosition[0] = arguments[0];
-      this.originPosition[1] = arguments[1];
-    }
+    arguments[0][2] = arguments[0][2] || 0;
+    this.originPosition = V.clone(arguments[0]);
   }
 
+  /**
+   * @return {Array} 
+   *            The target position.
+   */
   Anchor.prototype.getTargetPosition = function() {
     return V.clone(this.targetPosition);
   }
 
+  /**
+   * @param {Array} p
+   *            New target position [x, y, z]. Z coordinate is optional.
+   */
   Anchor.prototype.setTargetPosition = function() {
-    if (arguments.length == 1) {
-      arguments[0][2] = arguments[0][2] || 0;
-      this.targetPosition = V.clone(arguments[0]);
-    } else {
-      this.targetPosition[0] = arguments[0];
-      this.targetPosition[1] = arguments[1];
-    }
+    arguments[0][2] = arguments[0][2] || 0;
+    this.targetPosition = V.clone(arguments[0]);
   }
 
-
+  /**
+   * @return {Array} 
+   *            The transformation matrix of this anchor.
+   */
   Anchor.prototype.getTransformMatrix = function() {
     return M.clone(this.transformMatrix);
   }
@@ -546,7 +512,6 @@ function Anchor(pOrigin, pTarget) {
 
 
 }
-
 
 
 

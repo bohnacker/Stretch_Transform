@@ -50,8 +50,8 @@ function draw() {
   for (var z = -cubeW; z <= cubeW; z += tileSize) {
     for (var y = -cubeW; y <= cubeW; y += tileSize) {
       for (var x = -cubeW; x < cubeW; x += tileSize) {
-        var p1 = myTransform.transform(x, y, z);
-        var p2 = myTransform.transform(x + tileSize, y, z);
+        var p1 = myTransform.transform([x, y, z]);
+        var p2 = myTransform.transform([x + tileSize, y, z]);
         line(p1[0], p1[1], p1[2], p2[0], p2[1], p2[2]);
       }
     }
@@ -61,8 +61,8 @@ function draw() {
   for (var z = -cubeW; z <= cubeW; z += tileSize) {
     for (var y = -cubeW; y < cubeW; y += tileSize) {
       for (var x = -cubeW; x <= cubeW; x += tileSize) {
-        var p1 = myTransform.transform(x, y, z);
-        var p2 = myTransform.transform(x, y + tileSize, z);
+        var p1 = myTransform.transform([x, y, z]);
+        var p2 = myTransform.transform([x, y + tileSize, z]);
         line(p1[0], p1[1], p1[2], p2[0], p2[1], p2[2]);
       }
     }
@@ -72,8 +72,8 @@ function draw() {
   for (var z = -cubeW; z < cubeW; z += tileSize) {
     for (var y = -cubeW; y <= cubeW; y += tileSize) {
       for (var x = -cubeW; x <= cubeW; x += tileSize) {
-        var p1 = myTransform.transform(x, y, z);
-        var p2 = myTransform.transform(x, y, z + tileSize);
+        var p1 = myTransform.transform([x, y, z]);
+        var p2 = myTransform.transform([x, y, z + tileSize]);
         line(p1[0], p1[1], p1[2], p2[0], p2[1], p2[2]);
       }
     }

@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <script src="../../dist/StretchTransform.js"></script>
     <style type="text/css">
-      body {
-        font-family: sans-serif;
+      p {
+        font-family: monospace;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
     </style>
   </head>
@@ -16,30 +18,44 @@
       var myTransform = new StretchTransform();
 
       // Add some anchors. The first point will be transformed exactly to the second.
-      myTransform.addAnchor([0, 0], [200, 100]);
+      myTransform.addAnchor([  0,   0], [200, 100]);
       myTransform.addAnchor([300, 0], [300, 350]);
       myTransform.addAnchor([150, 300], [100, 300]);
+      print('Added three anchors.')
+      print('Anchor 1: Origin point [  0,   0] transforms to target point [200, 100]')
+      print('Anchor 2: Origin point [300,   0] transforms to target point [300, 350]')
+      print('Anchor 3: Origin point [150, 300] transforms to target point [100, 300]')
+      print('------------------------------------------')
 
-      var result = myTransform.transform(0, 0);
+
+      var result = myTransform.transform([0, 0]);
       print('Giving an original position of an anchor will result in its target poisition.')
-      print('So, transforming point (0, 0) results in:')
-      print(result.toString());
-      print('------------------------------------------')
-
-      var result = myTransform.transform(150, 150);
-      print('Transforming point (150, 150) results in:')
+      print('So, transforming point [0, 0] results in:')
       print(result);
       print('------------------------------------------')
 
-      var result = myTransform.transform(150, 150, 100);
+      var result = myTransform.transform([150, 150]);
+      print('Transforming point [150, 150] results in:')
+      print(result);
+      print('------------------------------------------')
+
+      var result = myTransform.transform([150, 150, 100]);
       print('Every StrechTransform is done in 3d space even if you give only 2d coordinates for the anchors.')
-      print('Transforming point (150, 150, 100) results in:')
+      print('Transforming point [150, 150, 100] results in:')
       print(result);
       print('------------------------------------------')
 
-      function print(text) {
-        document.body.append(text);
-        document.body.append(document.createElement('br'));
+
+      // Helper function to output stuff in the browser window
+      function print(output) {
+        if (output.join) {
+          var array =  Array.prototype.slice.call(output);
+          output = array.map(el => (parseFloat(el).toFixed(2)));
+          output = '[' + output.join(', ') + ']';
+        }
+        var p = document.createElement('p');
+        p.innerHTML = output.replace(/ /g, '&nbsp;');
+        document.body.append(p);
       }
     </script>
 

@@ -15,8 +15,6 @@ For a more detailed explanation of this project read [this](https://hartmut-bohn
 -   [StretchTransform](#stretchtransform)
     -   [addAnchor](#addanchor)
     -   [addAnchor](#addanchor-1)
-    -   [addAnchor](#addanchor-2)
-    -   [addAnchor](#addanchor-3)
     -   [removeAnchor](#removeanchor)
     -   [removeAnchor](#removeanchor-1)
     -   [getAnchorCount](#getanchorcount)
@@ -24,80 +22,63 @@ For a more detailed explanation of this project read [this](https://hartmut-bohn
     -   [getAnchorByPos](#getanchorbypos)
     -   [getAnchorByOriginPos](#getanchorbyoriginpos)
     -   [getAnchorByTargetPos](#getanchorbytargetpos)
+    -   [getAnchorOrigin](#getanchororigin)
     -   [setAnchorOrigin](#setanchororigin)
+    -   [getAnchorTarget](#getanchortarget)
     -   [setAnchorTarget](#setanchortarget)
     -   [getWeightingExponent1](#getweightingexponent1)
     -   [setWeightingExponent1](#setweightingexponent1)
     -   [getWeightingExponent2](#getweightingexponent2)
     -   [setWeightingExponent2](#setweightingexponent2)
     -   [transform](#transform)
-    -   [transform](#transform-1)
     -   [updateAnchorMatrices](#updateanchormatrices)
+-   [Anchor](#anchor)
+    -   [getOriginPosition](#getoriginposition)
+    -   [setOriginPosition](#setoriginposition)
+    -   [getTargetPosition](#gettargetposition)
+    -   [setTargetPosition](#settargetposition)
+    -   [getTransformMatrix](#gettransformmatrix)
 
-### StretchTransform
+## StretchTransform
 
-new StretchTransform() create an empty StretchTransform.
-
-### addAnchor
-
-Adds an Anchor.
-
-**Parameters**
-
--   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] that will be used for origin and target position
-
-Returns **Anchor** The new anchor
+new StretchTransform() creates an empty StretchTransform.
 
 ### addAnchor
 
-Adds an Anchor.
+Adds an Anchor where origin and target is the same. You can change either of them later on.
 
 **Parameters**
 
--   `xOrigin` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin position
--   `yOrigin` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin position
--   `xTarget` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for target position
--   `yTarget` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for target position
+-   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y, z] that will be used for origin and target position. Z coordinate is optional.
 
-Returns **Anchor** The new anchor
+Returns **[Anchor](#anchor)** The new anchor
 
 ### addAnchor
 
-Adds an Anchor.
+Adds an Anchor. pOrigin will be transformed to pTarget.
 
 **Parameters**
 
--   `pOrigin` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for origin position
--   `pTarget` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y] for target position
+-   `pOrigin` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y, z] for the origin position. Z coordinate is optional.
+-   `pTarget` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Array [x, y, z] for the target position. Z coordinate is optional.
 
-Returns **Anchor** The new anchor
-
-### addAnchor
-
-Adds an Anchor.
-
-**Parameters**
-
--   `x` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate for origin and target position
--   `y` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate for origin and target position
-
-Returns **Anchor** The new anchor
+Returns **[Anchor](#anchor)** The new anchor
 
 ### removeAnchor
 
-Removes an Anchor.
+Removes an Anchor giving the anchor
+
+**Parameters**
+
+-   `anchor` **[Anchor](#anchor)** Anchor to remove
+
+### removeAnchor
+
+Removes an Anchor giving the index of the anchor.
 
 **Parameters**
 
 -   `i` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor
-
-### removeAnchor
-
-Removes an Anchor.
-
-**Parameters**
-
--   `anchor` **Anchor** Anchor to remove
 
 ### getAnchorCount
 
@@ -116,8 +97,7 @@ Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** point [x, y, z] to search for an anchor (either origin or target position). Z coordinate is optional.
 -   `tolerance` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Radius around Anchor
 
-Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
-        specified position
+Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the specified position
 
 ### getAnchorByOriginPos
 
@@ -139,12 +119,28 @@ Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the found anchor or -1 if nothing was found at the
         specified position
 
+### getAnchorOrigin
+
+**Parameters**
+
+-   `i` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor.
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The origin position.
+
 ### setAnchorOrigin
 
 **Parameters**
 
 -   `i` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor.
 -   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** New origin position [x, y, z]. Z coordinate is optional.
+
+### getAnchorTarget
+
+**Parameters**
+
+-   `i` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Index of the anchor.
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The target position.
 
 ### setAnchorTarget
 
@@ -159,9 +155,7 @@ Returns **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### setWeightingExponent1
 
-Exponent of the weighting function. Defines how the relations from one anchor
-to all others are cumulated. The closer the other anchor lies, the
-stronger it is weighted.
+Exponent of the weighting function. Defines how the relations from one anchor to all others are cumulated. The closer the other anchor lies, the stronger it is weighted.
 
 **Parameters**
 
@@ -187,21 +181,9 @@ its new position.
 
 **Parameters**
 
--   `x` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** X coordinate of the point to be transformed
--   `y` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Y coordinate of the point to be transformed
-
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
-
-### transform
-
-Main function of the class. Transforms a point on the plane and returns
-its new position.
-
-**Parameters**
-
 -   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Point given as an Array [x, y, z] to be transformed. Z coordinate is optional.
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array [x, y]
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Transformed point as an Array.
 
 ### updateAnchorMatrices
 
@@ -211,3 +193,36 @@ method will be called automatically. It calculates a transformation
 matrix for each anchor. This matrix reflects the translation of the
 anchor and the rotation and scaling depending on the (possibly) changed
 positions of all other anchors.
+
+### Anchor
+
+An Anchor has an origin an a target position. Usually you won't have to deal with it directly. Still, there are some functions which could come handy.
+
+**Parameters**
+
+-   `pOrigin`  
+-   `pTarget`  
+
+### getOriginPosition
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The origin position.
+
+### setOriginPosition
+
+**Parameters**
+
+-   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** New origin position [x, y, z]. Z coordinate is optional.
+
+### getTargetPosition
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The target position.
+
+### setTargetPosition
+
+**Parameters**
+
+-   `p` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** New target position [x, y, z]. Z coordinate is optional.
+
+### getTransformMatrix
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The transformation matrix of this anchor.

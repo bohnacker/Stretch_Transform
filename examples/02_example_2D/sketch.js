@@ -60,17 +60,17 @@ function draw() {
   // horizontal lines
   for (var y = margin; y <= height - margin; y += tileSize) {
     for (var x = margin; x < width - margin; x += tileSize) {
-      var p1 = myTransform.transform(x, y);
+      var p1 = myTransform.transform([x, y]);
       if (isNaN(p1[1])) noLoop();
-      var p2 = myTransform.transform(x + tileSize, y);
+      var p2 = myTransform.transform([x + tileSize, y]);
       line(p1[0], p1[1], p2[0], p2[1]);
     }
   }
   // vertical lines
   for (var y = margin; y < height - margin; y += tileSize) {
     for (var x = margin; x <= width - margin; x += tileSize) {
-      var p1 = myTransform.transform(x, y);
-      var p2 = myTransform.transform(x, y + tileSize);
+      var p1 = myTransform.transform([x, y]);
+      var p2 = myTransform.transform([x, y + tileSize]);
       line(p1[0], p1[1], p2[0], p2[1]);
     }
   }

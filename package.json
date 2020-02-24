@@ -29,7 +29,7 @@
   "homepage": "https://github.com/bohnacker/Stretch_Transform",
   "devDependencies": {
     "browserify": "^14.4.0",
-    "documentation": "^5.2.2",
+    "documentation": "^12.1.4",
     "uglify-js": "^3.0.28",
     "watch": "^1.0.2",
     "gl-matrix": "^2.4.0"
