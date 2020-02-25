@@ -303,7 +303,6 @@ function StretchTransform() {
    */
   StretchTransform.prototype.updateAnchorMatrices = function() {
     for (var i = 0; i < this.anchors.length; i++) {
-      //var matrix = this.anchors[i].getTransformMatrix();
       var t = V.fromValues(
         this.anchors[i].targetPosition[0] - this.anchors[i].originPosition[0],
         this.anchors[i].targetPosition[1] - this.anchors[i].originPosition[1],
@@ -316,11 +315,9 @@ function StretchTransform() {
       // more influence on its rotation and scaling
       // could also be done with the origin positions, but I think that
       // it's far better to do it with the target positions.
-      // float[] weights = calcWeights(anchors[i].getOriginPosition(),
-      // ORIGINS, i, weightingExponent1);
+      // var weights = this.calcWeights(this.anchors[i].getOriginPosition(), TARGETS, i, this.weightingExponent1);
       var weights = this.calcWeights(this.anchors[i].getTargetPosition(), TARGETS, i, this.weightingExponent1);
 
-      var angles = [];
       var quaternions = [];
 
       var sFac = 1;
@@ -335,18 +332,11 @@ function StretchTransform() {
           var targetI = this.anchors[i].getTargetPosition();
           var targetJ = this.anchors[j].getTargetPosition();
 
-          var w1 = Math.atan2(originJ[1] - originI[1], originJ[0] - originI[0]);
-          var w2 = Math.atan2(targetJ[1] - targetI[1], targetJ[0] - targetI[0]);
-          var w = H.angleDifference(w2, w1);
-          angles.push(w);
-
           var v1 = V.create();
           V.sub(v1, originJ, originI);
-          V.mul(v1, v1, [1, 1, 1]);
           V.normalize(v1, v1);
           var v2 = V.create();
           V.sub(v2, targetJ, targetI);
-          V.mul(v2, v2, [1, 1, 1]);
           V.normalize(v2, v2);
 
           var q = Q.create();
@@ -365,7 +355,6 @@ function StretchTransform() {
           s = Math.pow(s, fac);
           sFac *= s;
         } else {
-          angles.push(0);
           quaternions.push(Q.create());
         }
       }
@@ -388,8 +377,6 @@ function StretchTransform() {
 
     // calc distances between point and all original anchors
     var dists = [];
-    // dists.length = this.anchors.length;
-    // dists.fill(0);
 
     var n = this.anchors.length;
 
@@ -523,43 +510,6 @@ function Anchor(pOrigin, pTarget) {
 
 // Math Helper functions
 var H = {
-
-  // helping function that calculates the difference of two angles
-  angleDifference: function(theAngle1, theAngle2) {
-    var a1 = (theAngle1 % TWO_PI + TWO_PI) % TWO_PI;
-    var a2 = (theAngle2 % TWO_PI + TWO_PI) % TWO_PI;
-
-    if (a2 > a1) {
-      var d1 = a2 - a1;
-      var d2 = a1 + TWO_PI - a2;
-      if (d1 <= d2) {
-        return -d1;
-      } else {
-        return d2;
-      }
-    } else {
-      var d1 = a1 - a2;
-      var d2 = a2 + TWO_PI - a1;
-      if (d1 <= d2) {
-        return d1;
-      } else {
-        return -d2;
-      }
-    }
-  },
-
-  // calculates the weighted average from a list of angles
-  angleAverage: function(angles, weights) {
-    var res = new V.create();
-
-    for (var i = 0; i < angles.length; i++) {
-      var v = V.fromValues(Math.cos(angles[i]), Math.sin(angles[i]), 0, 0);
-      V.scale(v, v, weights[i]);
-      V.add(res, res, v);
-    }
-
-    return Math.atan2(res[1], res[0]);
-  },
 
   // calculates the weighted sperical interpolation from a list of quaternions
   quaternionAverage: function(quaternions, weights) {

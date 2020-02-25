@@ -1,6 +1,6 @@
 {
   "name": "stretch-transform",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A javascript library to transform a plane or 3d space in a rubbery way.",
   "license": "MIT",
   "main": "index.js",
@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/bohnacker/Stretch_Transform/issues"
   },
-  "homepage": "https://github.com/bohnacker/Stretch_Transform",
+  "homepage": "https://hartmut-bohnacker.de/projects/stretch-transform",
   "devDependencies": {
     "browserify": "^14.4.0",
     "documentation": "^12.1.4",
